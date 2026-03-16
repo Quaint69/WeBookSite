@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeBook - Development Roadmap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        :root {
+            --color-bg: #FAF7F2;
+            --color-bg-alt: #F0EBE3;
+            --color-text: #2C2416;
+            --color-text-muted: #6B5D4D;
+            --color-accent: #8B4513;
+            --color-accent-light: #A0522D;
+            --color-accent-warm: #CD853F;
+            --color-border: #D4C5B0;
+            --color-card: #FFFDF9;
+            --color-success: #5D8A4A;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Source Sans 3', -apple-system, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #1A1612;
+                --color-bg-alt: #252019;
+                --color-text: #E8E2D9;
+                --color-text-muted: #A89B8A;
+                --color-accent: #CD853F;
+                --color-accent-light: #DEB887;
+                --color-accent-warm: #F4A460;
+                --color-border: #3D352A;
+                --color-card: #2A231C;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(205, 133, 63, 0.03) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 30%;
+            min-width: 300px;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+            border-right: 1px solid var(--color-border);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        /* Middle Sidebar - Screenshots */
+        .sidebar-screenshots {
+            width: 33%;
+            min-width: 300px;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 37%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+            border-right: 1px solid var(--color-border);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .logo-section {
+
+            text-align: center;
+            width: 100%;
+            font-size: 2rem;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-img { 
+            width: 4rem;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Download Button - Replace href with your download link */
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-warm) 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .app-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .app-title span {
+            color: var(--color-accent);
+        }
+
+        .app-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-warm) 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .app-description {
+            color: var(--color-text-muted);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            text-align: center;
+        }
+
+        /* Image Carousel */
+        .carousel-section {
+            margin: 0rem;
+            padding: 0rem;
+        }
+
+        .carousel-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .carousel {
+            position: relative;
+            width: 74%;
+            height: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--color-accent);
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .carousel-arrow:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-arrow.prev {
+            left: 10px;
+        }
+
+        .carousel-arrow.next {
+            right: 10px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            cursor: default;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .tech-stack {
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .tech-stack-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .tech-tag {
+            background: var(--color-bg-alt);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            border: 1px solid var(--color-border);
+        }
+
+        /* Right Content - Scrollable */
+        .main-content {
+            flex: 1;
+            margin-left: 70%;
+            min-width: 0;
+            padding: 2rem 1.5rem;
+        }
+
+        .counter-badge {
+            display: none;
+        }
+
+        /* Tab Header */
+        .content-header {
+            position: sticky;
+            top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            z-index: 100;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--color-bg-alt);
+            padding: 0.25rem;
+            border-radius: 50px;
+            border: 1px solid var(--color-border);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--color-text);
+        }
+
+        .tab-btn.active {
+            background: var(--color-accent);
+            color: white;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        .content-section {
+            display: none;
+            min-height: 200px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .counter-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .progress-item {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: stretch;
+            gap: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .progress-item:hover {
+            transform: translateX(6px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-accent);
+        }
+
+        .item-number {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-warm) 100%);
+            color: white;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+            align-self: center;
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+            padding-top: 2px;
+        }
+
+        .item-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .item-desc {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 1300px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar, .sidebar-screenshots {
+                position: relative;
+                width: 100%;
+                max-width: none;
+                height: auto;
+                min-height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--color-border);
+            }
+            
+            .sidebar-screenshots {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .carousel {
+                width: auto;
+                height: 100%;
+                
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .logo-img {
+                width: 3rem;
+                height: auto;
+            }
+            
+            .download-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+                margin-bottom: 2rem;
+            }
+            
+            .app-description {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media print {
+            .sidebar, .sidebar-screenshots { display: none; }
+            .main-content { margin-left: 0; }
+            .modal { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <a href="#" class="logo">
+                    <img src="ic_launcher.png" alt="WeBook Logo" class="logo-img">
+                    <span>WeBook</span>
+                </a>
+                
+                
+            </div>
+            
+            <p class="app-description">
+                A Flutter e-book reader app with EPUB/PDF support, Text-to-Speech, 
+                online book discovery via Gutenberg & Open Library APIs, and a fully 
+                customizable reading experience.
+            </p>
+
+            <!-- TODO: Replace the href below with your actual download link (e.g., Google Play Store URL or APK download URL) -->
+                <a class="download-btn" onclick="openDownload()">Download Now</a>
+
+            <div class="tech-stack">
+                <div class="tech-stack-title">Tech Stack</div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Flutter</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">EPUB</span>
+                    <span class="tech-tag">PDF</span>
+                    <span class="tech-tag">TTS</span>
+                    <span class="tech-tag">REST API</span>
+                    <span class="tech-tag">Hive</span>
+                    <span class="tech-tag">Android</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Middle Sidebar - Screenshots -->
+        <aside class="sidebar-screenshots">
+            <div class="carousel-section">
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide" onclick="openModal(0)">
+                            <img src="pics/Screenshot_2026-03-16-01-42-40-715_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 1">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(1)">
+                            <img src="pics/Screenshot_2026-03-16-01-42-57-105_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 2">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(2)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-00-354_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 3">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(3)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-04-144_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 4">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(4)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-19-110_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 5">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(5)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-25-940_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 6">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(6)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-32-948_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 7">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(7)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-35-907_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 8">
+                        </div>
+                        <div class="carousel-slide" onclick="openModal(8)">
+                            <img src="pics/Screenshot_2026-03-16-01-43-40-069_com.example.my_flutter_app.jpg" alt="WeBook Screenshot 9">
+                        </div>
+                    </div>
+                    <button class="carousel-arrow prev" onclick="prevSlide(event)">&#8249;</button>
+                    <button class="carousel-arrow next" onclick="nextSlide(event)">&#8250;</button>
+                    <div class="carousel-dots"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content - Scrollable -->
+        <main class="main-content">
+            <div class="content-header">
+                <div class="tab-buttons">
+                    <button 
+                        class="tab-btn" 
+                        data-tab="roadmap"
+                        onclick="showRoadmap()">
+                        Roadmap
+                    </button>
+                    <button 
+                        class="tab-btn active" 
+                        data-tab="features"
+                        onclick="showFeatures()">
+                        Features
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Container (HTMX swap target) -->
+            <div id="content-container">
+                <div class="progress-list">
+                    <div class="progress-item">
+                        <span class="item-number">1</span>
+                        <div class="item-content">
+                            <div class="item-text">EPUB Reader</div>
+                            <div class="item-desc">Read EPUB format e-books with customizable display</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">2</span>
+                        <div class="item-content">
+                            <div class="item-text">PDF Support</div>
+                            <div class="item-desc">View PDF documents with zoom and navigation</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">3</span>
+                        <div class="item-content">
+                            <div class="item-text">Text-to-Speech</div>
+                            <div class="item-desc">Listen to books read aloud with customizable voice</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">4</span>
+                        <div class="item-content">
+                            <div class="item-text">Gutenberg Integration</div>
+                            <div class="item-desc">Browse and download free books from Project Gutenberg</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">5</span>
+                        <div class="item-content">
+                            <div class="item-text">Open Library</div>
+                            <div class="item-desc">Access millions of books via Open Library API</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">6</span>
+                        <div class="item-content">
+                            <div class="item-text">Custom Reader</div>
+                            <div class="item-desc">Fully customizable reading experience</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">7</span>
+                        <div class="item-content">
+                            <div class="item-text">Theme Options</div>
+                            <div class="item-desc">Light, dark, sepia themes for comfortable reading</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">8</span>
+                        <div class="item-content">
+                            <div class="item-text">Font Customization</div>
+                            <div class="item-desc">Choose fonts, sizes, and line spacing</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">9</span>
+                        <div class="item-content">
+                            <div class="item-text">Bookmarks</div>
+                            <div class="item-desc">Save and manage bookmarks within books</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">10</span>
+                        <div class="item-content">
+                            <div class="item-text">Highlights</div>
+                            <div class="item-desc">Highlight text with multiple color options</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">11</span>
+                        <div class="item-content">
+                            <div class="item-text">In-Book Search</div>
+                            <div class="item-desc">Search within books for specific content</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">12</span>
+                        <div class="item-content">
+                            <div class="item-text">Reading Progress</div>
+                            <div class="item-desc">Track and sync reading position</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">13</span>
+                        <div class="item-content">
+                            <div class="item-text">Library Management</div>
+                            <div class="item-desc">Organize books with sections and filtering</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">14</span>
+                        <div class="item-content">
+                            <div class="item-text">Local Files</div>
+                            <div class="item-desc">Import and read local EPUB/PDF files</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">15</span>
+                        <div class="item-content">
+                            <div class="item-text">Auto Scroll</div>
+                            <div class="item-desc">Hands-free reading with automatic scrolling</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">16</span>
+                        <div class="item-content">
+                            <div class="item-text">Volume Keys</div>
+                            <div class="item-desc">Control page turning with device volume buttons</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">17</span>
+                        <div class="item-content">
+                            <div class="item-text">Lazy Loading</div>
+                            <div class="item-desc">Optimized loading for large e-books</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">18</span>
+                        <div class="item-content">
+                            <div class="item-text">Book Covers</div>
+                            <div class="item-desc">Beautiful cover display and gallery view</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">19</span>
+                        <div class="item-content">
+                            <div class="item-text">History</div>
+                            <div class="item-desc">Track recently read books and continue reading</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">20</span>
+                        <div class="item-content">
+                            <div class="item-text">Browse Books</div>
+                            <div class="item-desc">Browse online catalogs with filtering options</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal" onclick="closeModal(event)">
+        <span class="modal-close">&times;</span>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="Enlarged screenshot">
+        </div>
+    </div>
+
+    <script>
+        // Download button - opens in new tab
+        function openDownload() {
+            // Replace with your actual download URL
+            const downloadUrl = 'https://drive.google.com/file/d/13ZGuJwD4SPEoWXiLm0Xyem6UXo4C80NU/view?usp=drive_link';
+            window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // Roadmap content template
+        const roadmapTemplate = `<div class="progress-list">
+                <div class="progress-item">
+                    <span class="item-number">1</span>
+                    <div class="item-content">
+                        <div class="item-text">Basic UI</div>
+                        <div class="item-desc">Initial app layout and structure</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">2</span>
+                    <div class="item-content">
+                        <div class="item-text">Cache</div>
+                        <div class="item-desc">Local data caching system implementation</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">3</span>
+                    <div class="item-content">
+                        <div class="item-text">Gutenberg API</div>
+                        <div class="item-desc">Integrated Project Gutenberg book database</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">4</span>
+                    <div class="item-content">
+                        <div class="item-text">Custom Reader</div>
+                        <div class="item-desc">Built custom ebook reader component</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">5</span>
+                    <div class="item-content">
+                        <div class="item-text">Rework Custom Reader</div>
+                        <div class="item-desc">Major refactor of reader architecture</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">6</span>
+                    <div class="item-content">
+                        <div class="item-text">Book Cover</div>
+                        <div class="item-desc">Book cover display and theming</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">7</span>
+                    <div class="item-content">
+                        <div class="item-text">Animation Pre-render + Search + Filter</div>
+                        <div class="item-desc">Animated transitions, book search, and filtering</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">8</span>
+                    <div class="item-content">
+                        <div class="item-text">Library Fixes + Theme Rework</div>
+                        <div class="item-desc">Cache, filter, history fixes and cover theme update</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">9</span>
+                    <div class="item-content">
+                        <div class="item-text">Rework Custom Reader UI</div>
+                        <div class="item-desc">Redesigned reader interface</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">10</span>
+                    <div class="item-content">
+                        <div class="item-text">Splash Screen</div>
+                        <div class="item-desc">App launch splash screen</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">11</span>
+                    <div class="item-content">
+                        <div class="item-text">Scale Down UI 25%</div>
+                        <div class="item-desc">Reduced UI scale for better visibility</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">12</span>
+                    <div class="item-content">
+                        <div class="item-text">Redo Custom Reader Setting</div>
+                        <div class="item-desc">Rewrote reader settings system</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">13</span>
+                    <div class="item-content">
+                        <div class="item-text">Page Turning + Volume Keys</div>
+                        <div class="item-desc">Swipe page navigation and volume button controls</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">14</span>
+                    <div class="item-content">
+                        <div class="item-text">Custom Reader Setting</div>
+                        <div class="item-desc">Enhanced reader settings options</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">15</span>
+                    <div class="item-content">
+                        <div class="item-text">Fixes + Spacing + Highlight + Search</div>
+                        <div class="item-desc">Bug fixes, layout spacing, text highlighting, in-book search</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">16</span>
+                    <div class="item-content">
+                        <div class="item-text">EPUB File Support</div>
+                        <div class="item-desc">Added EPUB file import capability</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">17</span>
+                    <div class="item-content">
+                        <div class="item-text">Scrolling Fix</div>
+                        <div class="item-desc">Fixed scroll behavior in reader</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">18</span>
+                    <div class="item-content">
+                        <div class="item-text">More Reader Fixes</div>
+                        <div class="item-desc">Additional reader-related bug fixes</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">19</span>
+                    <div class="item-content">
+                        <div class="item-text">Android Permissions + Local Files</div>
+                        <div class="item-desc">Fixed file permissions and local file display</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">20</span>
+                    <div class="item-content">
+                        <div class="item-text">Tap to Hide + Internet Permission</div>
+                        <div class="item-desc">Toggle for tap gesture and production internet permission</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">21</span>
+                    <div class="item-content">
+                        <div class="item-text">Openlibrary API</div>
+                        <div class="item-desc">Integrated Open Library API</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">22</span>
+                    <div class="item-content">
+                        <div class="item-text">Reader Code Refactoring</div>
+                        <div class="item-desc">Componentized custom reader code</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">23</span>
+                    <div class="item-content">
+                        <div class="item-text">Sepia Fix</div>
+                        <div class="item-desc">Fixed sepia theme mode</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">24</span>
+                    <div class="item-content">
+                        <div class="item-text">TTS Support</div>
+                        <div class="item-desc">Added Text-to-Speech functionality</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">25</span>
+                    <div class="item-content">
+                        <div class="item-text">TTS Optimization + Natural Reading</div>
+                        <div class="item-desc">Performance boost and sentence-boundary detection</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">26</span>
+                    <div class="item-content">
+                        <div class="item-text">TTS Highlighting</div>
+                        <div class="item-desc">Visual highlighting of spoken text</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">27</span>
+                    <div class="item-content">
+                        <div class="item-text">TTS Refactor + Resume</div>
+                        <div class="item-desc">Code refactor and resume-ability feature</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">28</span>
+                    <div class="item-content">
+                        <div class="item-text">TTS Optimization + Remove Scroll Bar</div>
+                        <div class="item-desc">Performance improvements, removed progress scroll bar</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">29</span>
+                    <div class="item-content">
+                        <div class="item-text">Title Centering + Safe Area</div>
+                        <div class="item-desc">Centered title and added status bar handling</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">30</span>
+                    <div class="item-content">
+                        <div class="item-text">Progress Bar Throttling</div>
+                        <div class="item-desc">Update progress only 1 second after scrolling ends</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">31</span>
+                    <div class="item-content">
+                        <div class="item-text">Pagination Last Read Save</div>
+                        <div class="item-desc">Save last read position in pagination mode</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">32</span>
+                    <div class="item-content">
+                        <div class="item-text">Fix TTS + Progress Scroll</div>
+                        <div class="item-desc">Fixed TTS highlighting, resume, and scroll issues</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">33</span>
+                    <div class="item-content">
+                        <div class="item-text">Read Aloud Resume Fix</div>
+                        <div class="item-desc">Fixed TTS resume after interruption</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">34</span>
+                    <div class="item-content">
+                        <div class="item-text">Adjust Below Title</div>
+                        <div class="item-desc">Layout adjustments below title area</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">35</span>
+                    <div class="item-content">
+                        <div class="item-text">HERO Animation</div>
+                        <div class="item-desc">Added smooth hero transitions</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">36</span>
+                    <div class="item-content">
+                        <div class="item-text">Remove Code Comments</div>
+                        <div class="item-desc">Cleaned up commented code</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">37</span>
+                    <div class="item-content">
+                        <div class="item-text">PDF Support</div>
+                        <div class="item-desc">Added experimental PDF file support</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">38</span>
+                    <div class="item-content">
+                        <div class="item-text">Book Browse Filtering</div>
+                        <div class="item-desc">Added filters for browsing books</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">39</span>
+                    <div class="item-content">
+                        <div class="item-text">Auto Smooth Scroll</div>
+                        <div class="item-desc">Implemented automatic smooth scrolling</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span class="item-number">40</span>
+                    <div class="item-content">
+                        <div class="item-text">Lazy Loading</div>
+                        <div class="item-desc">Lazy load content for large ebooks</div>
+                    </div>
+                </div>
+            </div>`;
+
+        // Features content template  
+        const featuresTemplate = `<div class="progress-list">
+                    <div class="progress-item">
+                        <span class="item-number">1</span>
+                        <div class="item-content">
+                            <div class="item-text">EPUB Reader</div>
+                            <div class="item-desc">Read EPUB format e-books with customizable display</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">2</span>
+                        <div class="item-content">
+                            <div class="item-text">PDF Support</div>
+                            <div class="item-desc">View PDF documents with zoom and navigation</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">3</span>
+                        <div class="item-content">
+                            <div class="item-text">Text-to-Speech</div>
+                            <div class="item-desc">Listen to books read aloud with customizable voice</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">4</span>
+                        <div class="item-content">
+                            <div class="item-text">Gutenberg Integration</div>
+                            <div class="item-desc">Browse and download free books from Project Gutenberg</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">5</span>
+                        <div class="item-content">
+                            <div class="item-text">Open Library</div>
+                            <div class="item-desc">Access millions of books via Open Library API</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">6</span>
+                        <div class="item-content">
+                            <div class="item-text">Custom Reader</div>
+                            <div class="item-desc">Fully customizable reading experience</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">7</span>
+                        <div class="item-content">
+                            <div class="item-text">Theme Options</div>
+                            <div class="item-desc">Light, dark, sepia themes for comfortable reading</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">8</span>
+                        <div class="item-content">
+                            <div class="item-text">Font Customization</div>
+                            <div class="item-desc">Choose fonts, sizes, and line spacing</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">9</span>
+                        <div class="item-content">
+                            <div class="item-text">Bookmarks</div>
+                            <div class="item-desc">Save and manage bookmarks within books</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">10</span>
+                        <div class="item-content">
+                            <div class="item-text">Highlights</div>
+                            <div class="item-desc">Highlight text with multiple color options</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">11</span>
+                        <div class="item-content">
+                            <div class="item-text">In-Book Search</div>
+                            <div class="item-desc">Search within books for specific content</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">12</span>
+                        <div class="item-content">
+                            <div class="item-text">Reading Progress</div>
+                            <div class="item-desc">Track and sync reading position</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">13</span>
+                        <div class="item-content">
+                            <div class="item-text">Library Management</div>
+                            <div class="item-desc">Organize books with sections and filtering</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">14</span>
+                        <div class="item-content">
+                            <div class="item-text">Local Files</div>
+                            <div class="item-desc">Import and read local EPUB/PDF files</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">15</span>
+                        <div class="item-content">
+                            <div class="item-text">Auto Scroll</div>
+                            <div class="item-desc">Hands-free reading with automatic scrolling</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">16</span>
+                        <div class="item-content">
+                            <div class="item-text">Volume Keys</div>
+                            <div class="item-desc">Control page turning with device volume buttons</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">17</span>
+                        <div class="item-content">
+                            <div class="item-text">Lazy Loading</div>
+                            <div class="item-desc">Optimized loading for large e-books</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">18</span>
+                        <div class="item-content">
+                            <div class="item-text">Book Covers</div>
+                            <div class="item-desc">Beautiful cover display and gallery view</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">19</span>
+                        <div class="item-content">
+                            <div class="item-text">History</div>
+                            <div class="item-desc">Track recently read books and continue reading</div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span class="item-number">20</span>
+                        <div class="item-content">
+                            <div class="item-text">Browse Books</div>
+                            <div class="item-desc">Browse online catalogs with filtering options</div>
+                        </div>
+                    </div>
+                </div>`;
+
+        // Tab switching - using HTMX event system
+        function showRoadmap() {
+            // Trigger HTMX swap event
+            htmx.trigger('#content-container', 'htmx:swap', { innerHTML: roadmapTemplate });
+            
+            // Direct swap for reliability
+            document.getElementById('content-container').innerHTML = roadmapTemplate;
+            
+            // Update button states
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-tab="roadmap"]').classList.add('active');
+        }
+        
+        function showFeatures() {
+            // Trigger HTMX swap event  
+            htmx.trigger('#content-container', 'htmx:swap', { innerHTML: featuresTemplate });
+            
+            // Direct swap for reliability
+            document.getElementById('content-container').innerHTML = featuresTemplate;
+            
+            // Update button states
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-tab="features"]').classList.add('active');
+        }
+
+        // Carousel
+        const slides = document.querySelectorAll('.carousel-slide');
+        const track = document.querySelector('.carousel-track');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        let currentSlide = 0;
+        let autoSlideInterval;
+
+        // Create dots
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('carousel-dot');
+            if (index === 0) dot.classList.add('active');
+            dot.onclick = () => goToSlide(index);
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide(event) {
+            if (event) event.stopPropagation();
+            currentSlide = (currentSlide + 1) % slides.length;
+            goToSlide(currentSlide);
+        }
+
+        function prevSlide(event) {
+            if (event) event.stopPropagation();
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            goToSlide(currentSlide);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 3000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Start auto slide
+        startAutoSlide();
+
+        // Pause on hover
+        const carousel = document.querySelector('.carousel');
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+
+        // Modal
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        function openModal(index) {
+            const img = slides[index].querySelector('img');
+            modalImage.src = img.src;
+            modalImage.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event) event.stopPropagation();
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
